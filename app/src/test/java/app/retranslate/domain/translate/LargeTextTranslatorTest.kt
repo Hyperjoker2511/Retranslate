@@ -69,9 +69,10 @@ class LargeTextTranslatorTest {
         val input = "$paragraph\n\n$paragraph"
         val progress = mutableListOf<Pair<Int, Int>>()
 
-        val result = translator(provider).translate(input, "ko", "en") { done, total ->
-            progress += done to total
-        }
+        val result = translator(provider).translate(
+            input, "ko", "en",
+            onProgress = { done, total -> progress += done to total }
+        )
 
         val outcome = (result as AppResult.Ok).value
         assertEquals(2, provider.calls.size)
