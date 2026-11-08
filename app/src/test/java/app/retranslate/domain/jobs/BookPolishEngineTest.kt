@@ -21,7 +21,6 @@ import app.retranslate.domain.translate.ChapterSnapshots
 import app.retranslate.domain.translate.ImproveStrength
 import app.retranslate.domain.translate.PolishAi
 import app.retranslate.domain.translate.PolishScope
-import app.retranslate.domain.translate.PolishScopeFilter
 import app.retranslate.providers.QualityMode
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

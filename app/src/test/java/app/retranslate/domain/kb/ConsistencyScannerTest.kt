@@ -1,6 +1,7 @@
 package app.retranslate.domain.kb
 
 import app.retranslate.data.db.ChapterEntity
+import app.retranslate.data.db.KbCategory
 import app.retranslate.domain.books.DirectTxRunner
 import app.retranslate.domain.books.FakeChapterDao
 import app.retranslate.domain.books.FakeKnowledgeBaseDao
