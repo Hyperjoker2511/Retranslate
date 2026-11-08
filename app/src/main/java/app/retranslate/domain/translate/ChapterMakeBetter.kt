@@ -3,7 +3,7 @@ package app.retranslate.domain.translate
 import app.retranslate.core.error.AppError
 import app.retranslate.core.error.AppResult
 import app.retranslate.data.db.KbEntryEntity
-import app.retranslate.domain.kb.KbCategory
+import app.retranslate.data.db.KbCategory
 import app.retranslate.domain.kb.KbCompliance
 import app.retranslate.domain.kb.KbEntryDraft
 import app.retranslate.domain.kb.KbExtractionParser

@@ -4,6 +4,7 @@ import app.retranslate.core.error.AppError
 import app.retranslate.core.error.AppResult
 import app.retranslate.providers.LANG_AUTO
 import app.retranslate.providers.Languages
+import app.retranslate.providers.QualityMode
 import app.retranslate.providers.hub.ProviderRouter
 import app.retranslate.providers.hub.TranslatePurpose
 
