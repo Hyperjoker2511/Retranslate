@@ -84,6 +84,7 @@ import app.retranslate.ui.common.StitchHeader
 import app.retranslate.ui.common.StitchPrimaryButton
 import app.retranslate.ui.common.bounceClickable
 import app.retranslate.ui.theme.StitchMint
+import kotlinx.coroutines.launch
 
 /**
  * Quick Translate (PLAN.md §9.3), laid out EXACTLY as the Stitch
