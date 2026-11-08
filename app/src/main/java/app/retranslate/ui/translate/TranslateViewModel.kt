@@ -484,12 +484,16 @@ class TranslateViewModel(
             val outcome = translator.translate(
                 text = text,
                 source = current.sourceLang,
-                target = current.targetLang
-            ) { done, total ->
-                _state.update {
-                    it.copy(largeProgressText = "Translating part $done of $total…")
+                target = current.targetLang,
+                // Named argument, not a trailing lambda: v1.1.3 added
+                // parameters AFTER onProgress in LargeTextTranslator,
+                // so a trailing lambda would bind to the wrong slot.
+                onProgress = { done, total ->
+                    _state.update {
+                        it.copy(largeProgressText = "Translating part $done of $total…")
+                    }
                 }
-            }
+            )
         ) {
             is AppResult.Ok -> {
                 val value = outcome.value
