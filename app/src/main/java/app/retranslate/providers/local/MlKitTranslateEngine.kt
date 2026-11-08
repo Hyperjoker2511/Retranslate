@@ -14,21 +14,37 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 /**
  * The production [OfflineTranslateEngine] over Google ML Kit
- * (§H): 59 languages including Korean and Chinese, models download
- * per language pair and then translate entirely on the phone — free,
+ * (§H): 59 languages including Korean and Chinese, language models
+ * download to the phone and translation runs entirely on-device — free,
  * no key, no account, nothing leaves the device. Gemini Nano/AICore
  * is deliberately NOT used (the user's M31 doesn't have it).
  */
 class MlKitTranslateEngine : OfflineTranslateEngine {
 
-    override fun supportedTags(): Set<String> = TranslateLanguage.getAllLanguages()
+    override fun supportedTags(): Set<String> =
+        TranslateLanguage.getAllLanguages().toSet()
 
     override suspend fun downloadedPairs(): Set<OfflinePair> {
+        // ML Kit models are per LANGUAGE, not per pair (verified against
+        // the real 17.0.3 API: TranslateRemoteModel.Builder takes ONE
+        // language code and the model exposes getLanguage()). A pair is
+        // usable — in either direction — when both languages' models are
+        // on the device.
+        val languages = downloadedLanguages()
+        return languages.flatMap { source ->
+            languages
+                .filter { target -> target != source }
+                .map { target -> OfflinePair(source, target) }
+        }.toSet()
+    }
+
+    /** The single languages whose models are on the phone right now. */
+    private suspend fun downloadedLanguages(): Set<String> {
         val models = RemoteModelManager.getInstance()
             .getDownloadedModels(TranslateRemoteModel::class.java)
             .awaitTask()
             ?: return emptySet()
-        return models.map { OfflinePair(it.sourceLanguage, it.targetLanguage) }.toSet()
+        return models.map { it.language }.toSet()
     }
 
     override suspend fun download(
@@ -36,21 +52,31 @@ class MlKitTranslateEngine : OfflineTranslateEngine {
         targetTag: String,
         wifiOnly: Boolean
     ): AppResult<Unit> {
-        val model = TranslateRemoteModel.Builder(sourceTag, targetTag).build()
         val conditions = DownloadConditions.Builder().apply {
             if (wifiOnly) requireWifi()
         }.build()
-        return when (val result = RemoteModelManager.getInstance()
-            .download(model, conditions).awaitUnit()
-        ) {
-            is AppResult.Ok -> AppResult.Ok(Unit)
-            is AppResult.Err -> result
+        val manager = RemoteModelManager.getInstance()
+        // Both languages' models make the pair — fetch each one.
+        for (tag in setOf(sourceTag, targetTag)) {
+            val model = TranslateRemoteModel.Builder(tag).build()
+            when (val result = manager.download(model, conditions).awaitUnit()) {
+                is AppResult.Ok -> Unit
+                is AppResult.Err -> return result
+            }
         }
+        return AppResult.Ok(Unit)
     }
 
     override suspend fun delete(sourceTag: String, targetTag: String): AppResult<Unit> {
-        val model = TranslateRemoteModel.Builder(sourceTag, targetTag).build()
-        return RemoteModelManager.getInstance().deleteDownloadedModel(model).awaitUnit()
+        val manager = RemoteModelManager.getInstance()
+        for (tag in setOf(sourceTag, targetTag)) {
+            val model = TranslateRemoteModel.Builder(tag).build()
+            when (val result = manager.deleteDownloadedModel(model).awaitUnit()) {
+                is AppResult.Ok -> Unit
+                is AppResult.Err -> return result
+            }
+        }
+        return AppResult.Ok(Unit)
     }
 
     override suspend fun translate(
