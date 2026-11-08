@@ -195,13 +195,13 @@ class ChapterMakeBetter(
                         is PolishCoreResult.Applied -> AppResult.Ok(
                             MakeBetterOutcome(
                                 text = outcome.text,
-                                viaNames = listOf(ai.displayName),
+                                viaNames = listOf("Improve with AI"),
                                 base = base,
                                 notes = notes
                             )
                         )
                         is PolishCoreResult.Rejected -> AppResult.Err(
-                            AppError.AiBadOutput(ai.displayName)
+                            AppError.AiBadOutput("AI")
                         )
                     }
                     is AppResult.Err -> AppResult.Err(polished.error)
