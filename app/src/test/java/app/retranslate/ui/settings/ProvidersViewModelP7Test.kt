@@ -91,7 +91,7 @@ class ProvidersViewModelP7Test {
     }
 
     @Test
-    fun `rows include OpenAI and Claude needing keys, Ollama last and dormant`() =
+    fun `rows include OpenAI and Claude needing keys, Ollama dormant, Offline last`() =
         runTest(dispatcher) {
             val vm = viewModel()
             advanceUntilIdle()
@@ -103,10 +103,12 @@ class ProvidersViewModelP7Test {
             val claude = rows.first { it.id == ProviderId.CLAUDE }
             assertEquals("Needs a key", claude.statusText)
 
-            val ollama = rows.last()
-            assertEquals(ProviderId.OLLAMA, ollama.id)
+            // v1.1.3 (§H): the Offline row joined the end of the list —
+            // Ollama is no longer last; it stays dormant and explained.
+            val ollama = rows.first { it.id == ProviderId.OLLAMA }
             assertEquals("Not set up", ollama.statusText)
             assertTrue(ollama.detailText!!.contains("your own computer"))
+            assertEquals(ProviderId.OFFLINE, rows.last().id)
         }
 
     @Test

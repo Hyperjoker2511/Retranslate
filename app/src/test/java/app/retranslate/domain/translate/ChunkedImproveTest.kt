@@ -68,10 +68,10 @@ class ChunkedImproveTest {
 
     @Test
     fun `a chapter over the old cap improves block by block`() = runTest {
-        // ~200 paragraphs, well over the old 30,000-char refusal.
+        // ~320 paragraphs, well over the old 30,000-char refusal.
         val paragraph = "Jin Woo walked through the silent hall and " +
             "looked at the rain falling over the quiet village below."
-        val text = (1..200).joinToString("\n\n") { paragraph }
+        val text = (1..320).joinToString("\n\n") { paragraph }
         assertTrue(text.length > 30_000)
         val chapter = ChapterEntity(
             bookId = 1, number = 1, sourceText = "원문",
