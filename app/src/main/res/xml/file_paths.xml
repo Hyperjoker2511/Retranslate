@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- P6 (§7.5): only the export/backup temp area is shareable. -->
+<paths>
+    <cache-path name="temp" path="retranslate-temp/" />
+</paths>

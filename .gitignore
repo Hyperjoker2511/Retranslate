@@ -1,0 +1,13 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+app/build
+# Signing material (P8): never in git, never in chat — see release/KEYSTORE-README.txt
+release/*.keystore
+release/*.jks

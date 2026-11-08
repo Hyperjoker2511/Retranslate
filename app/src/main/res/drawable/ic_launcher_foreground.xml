@@ -1,0 +1,43 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Violet sphere (owner's chosen icon, staged as icon.svg 2026-11-03):
+         radial-gradient sphere centred at (54, 50), r=30, inside the
+         adaptive-icon safe zone; the black canvas is the icon background. -->
+    <path
+        android:pathData="M24,50 a30,30 0 1,0 60,0 a30,30 0 1,0 -60,0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="46.8"
+                android:centerY="38"
+                android:gradientRadius="48">
+                <item
+                    android:color="#c4b5fd"
+                    android:offset="0.0" />
+                <item
+                    android:color="#8b5cf6"
+                    android:offset="0.45" />
+                <item
+                    android:color="#4c1d95"
+                    android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <clip-path android:pathData="M24,50 a30,30 0 1,0 60,0 a30,30 0 1,0 -60,0" />
+    <path
+        android:fillColor="#ddd6fe"
+        android:fillAlpha="0.85"
+        android:pathData="M18,58 L30,58 L58,92 L46,92 Z" />
+    <path
+        android:fillColor="#ddd6fe"
+        android:fillAlpha="0.64"
+        android:pathData="M28,50 L38,50 L66,84 L56,84 Z" />
+    <path
+        android:fillColor="#ddd6fe"
+        android:fillAlpha="0.51"
+        android:pathData="M38,43 L46,43 L72,74 L64,74 Z" />
+</vector>
